@@ -5,7 +5,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
-import time
 import csv
 from datetime import datetime
 
@@ -26,24 +25,26 @@ driver.get(url)
 # Wait for the posts to load dynamically
 try:
     WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-testid*="post"]'))
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[data-tooltip]'))
     )
-    print("Posts loaded successfully.")
+    print("Posts and timestamps loaded successfully.")
 except Exception as e:
     print("Failed to load posts:", e)
     driver.quit()
     exit()
 
-# Extract posts
+# Extract posts and their timestamps
 posts = []
 post_elements = driver.find_elements(By.CSS_SELECTOR, 'div[data-testid*="post"]')
-for post in post_elements:
-    posts.append(post.text)
+timestamp_elements = driver.find_elements(By.CSS_SELECTOR, 'a[data-tooltip]')
+
+for post, timestamp in zip(post_elements, timestamp_elements):
+    posts.append({
+        "text": post.text,
+        "timestamp": timestamp.get_attribute("data-tooltip")  # Extract timestamp from the data-tooltip attribute
+    })
 
 driver.quit()
-
-# Get the current timestamp
-timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 # Save posts to a CSV file
 filename = f"bluesky_posts_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
@@ -51,6 +52,6 @@ with open(filename, mode='w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
     writer.writerow(["Timestamp", "Post"])  # Header row
     for post in posts:
-        writer.writerow([timestamp, post])
+        writer.writerow([post["timestamp"], post["text"]])
 
 print(f"Data saved to {filename}")
