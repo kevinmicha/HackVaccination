@@ -22,6 +22,7 @@ chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent resource limit
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 driver.get(url)
 
+
 # Wait for the posts to load dynamically
 try:
     WebDriverWait(driver, 10).until(
@@ -60,9 +61,9 @@ num_timestamps = len(timestamps)
 i = 0  # Index to iterate over posts
 while i < len(posts):
     # Assign the timestamp for this row
-    row_timestamp = timestamps[i].get_attribute("data-tooltip") if i < num_timestamps else ""
+    row_timestamp = timestamps[i//2].get_attribute("data-tooltip") if i < 2 * num_timestamps else ""
     post_text = posts[i].text  # The post content
-
+    print(row_timestamp)
     # Attempt to process the next element as a "like" if it's valid
     if i + 1 < len(posts) and (posts[i + 1].text.isdigit() or 'K' in posts[i + 1].text):
         like_text = process_likes(posts[i + 1].text)
