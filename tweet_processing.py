@@ -34,12 +34,20 @@ except Exception as e:
     exit()
 
 def process_likes(like_text):
+    """
+    Converts like_text to a numeric value.
+    - If it contains 'K', multiplies by 1000 and returns a float.
+    - If it's numeric, returns an integer.
+    - Otherwise, defaults to 0.
+    """
     if 'K' in like_text:  # Handle likes in thousands (e.g., '1.1K')
-        return float(like_text.replace('K', '')) * 1000
+        try:
+            return float(like_text.replace('K', '')) * 1000
+        except ValueError:
+            return 0
     elif like_text.isdigit():  # Handle pure numeric likes
         return int(like_text)
     return 0  # Non-numeric or empty likes default to 0
-
 
 # Extract posts and their timestamps
 posts = driver.find_elements(By.CSS_SELECTOR, 'div[data-testid*="post"]')
@@ -47,19 +55,29 @@ timestamps = driver.find_elements(By.CSS_SELECTOR, 'a[data-tooltip]')
 
 # Combine posts and likes with their corresponding timestamps
 combined_data = []
-num_pairs = len(timestamps) // 2  # Number of complete pairs of posts/likes
+num_timestamps = len(timestamps)
 
-for i in range(num_pairs):
-    row_timestamp = timestamps[i].get_attribute("data-tooltip")  # First timestamp for the row
-    post_text = posts[2*i].text 
-    like_text = process_likes(posts[2*i+1].text)
+i = 0  # Index to iterate over posts
+while i < len(posts):
+    # Assign the timestamp for this row
+    row_timestamp = timestamps[i].get_attribute("data-tooltip") if i < num_timestamps else ""
+    post_text = posts[i].text  # The post content
 
+    # Attempt to process the next element as a "like" if it's valid
+    if i + 1 < len(posts) and (posts[i + 1].text.isdigit() or 'K' in posts[i + 1].text):
+        like_text = process_likes(posts[i + 1].text)
+        i += 1  # Skip the like row in the next iteration
+    else:
+        like_text = 0  # Default to 0 if no repost/like data
 
+    # Add the processed data to the list
     combined_data.append({
         "timestamp": row_timestamp,
         "post_text": post_text,
-        "like_text": like_text
+        "like_text": int(like_text)
     })
+
+    i += 1  # Move to the next post
 
 driver.quit()
 
