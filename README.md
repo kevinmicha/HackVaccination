@@ -54,9 +54,10 @@ When an alert is triggered, a new tab is opened to display:
 * This dashboard streamlines real-time monitoring and facilitates rapid, informed interventions by Medical Affairs teams.
 
 ### Manually handling the dependencies
+
 If you want to use an existing environment, just omit the Anaconda commands above:
 ```bash
-git clone https://github.com/kevinmicha/HACKVACCINATION
+git clone https://github.com/kevinmicha/HackVaccination
 cd HACKVACCINATION
 pip install .
 ```
