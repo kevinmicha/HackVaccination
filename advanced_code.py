@@ -17,6 +17,13 @@ class PostResponse(Model):
     text: str
     agent_address: str
 
+class ImageRequest(Model):
+    prompt: str
+
+
+class ImageResponse(Model):
+    url: str
+
 class SentimentRequest(Model):
     text: str
 
@@ -53,6 +60,8 @@ fund_agent_if_low(agent.wallet.address())
 SENTIMENT_AGENT_ADDRESS = "agent1qvzs7zhwdcx6rlnyzs9p9sjjq4zscd44zvx8fnpflrlu2ptvlh5fxlkwzge"
 OPENAI_AGENT_ADDRESS = "agent1q0h70caed8ax769shpemapzkyk65uscw4xwk6dc4t3emvp5jdcvqs9xs32y"
 TAVILY_AGENT_ADDRESS = "agent1qt5uffgp0l3h9mqed8zh8vy5vs374jl2f8y0mjjvqm44axqseejqzmzx9v8"
+AI_IMAGE_ADDRESS = "agent1qwvw7n7vn0ze4c0eq3q7wsjs6luv85mmmd8kw2m0ncuk2j3cnqlkk32kp9y"
+
 
 pending_responses = {}
 
@@ -154,6 +163,15 @@ async def handle_web_search_response(ctx: Context, sender: str, msg: WebSearchRe
 async def handle_openai_response(ctx: Context, sender: str, msg: Response):
     """Handle the response from the OpenAI agent."""
     ctx.logger.info(f"Received post creation response: {msg.text}")
+    prompt = ImageRequest(
+        prompt="In the background, a bright rainbow arches across a clear blue sky, each color representing different forms of support and love. A gentle breeze carries the sweet fragrance of blooming flowers, evoking a sense of peace and connection. This scene embodies the idea that the right care and nurturing, represented by the gardener and the vibrant plants, lead to a flourishing community. The message reads: Together, we cultivate a healthier tomorrow. Let this imagery reflect trust and unity in the quest for well-being, while subtly hinting at the protective role of vaccination in nurturing a vibrant, thriving garden of life."
+    )
+    
+    await ctx.send(AI_IMAGE_ADDRESS, prompt)
+
+@agent.on_message(ImageResponse)
+async def handle_response(ctx: Context, sender: str, msg: ImageResponse):
+    ctx.logger.info(f"Received response from {sender}: {msg.url}")
 
 
 if __name__ == "__main__":
