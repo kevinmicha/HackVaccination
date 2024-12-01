@@ -203,13 +203,14 @@ with col3:
 
 with col4:
     st.markdown("### 🌟 Engagement Stats")
+    st.write("The chart on the left shows the daily negative engagements two weeks before the action date and a month after the action date. The figures below show the total engagements with the tweet that was posted.")
+
     col_replies, col_reposts, col_likes = st.columns(3)
     with col_replies:
         st.image(reply_icon, width=50)
         st.metric("Replies", replies)
     with col_reposts:
-        st.write("The chart on the left shows the daily negative engagements two weeks before the action date and a month after the action date. The figures below show the total engagements with the tweet that was posted.")
-
+        
         st.image(repost_icon, width=50)
         st.metric("Reposts", reposts)
     with col_likes:
