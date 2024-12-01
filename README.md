@@ -1,4 +1,8 @@
-# HackVaccination
+# VaxLens: Data-Driven Vaccine Insights
+
+[![Python 3.8 - 3.11](https://img.shields.io/badge/Python-3.8%20--%203.11-blue)](https://www.python.org/downloads/release/python-3113/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/license/mit/)
+
 Addressing Vaccine Hesitancy through Social Media Analysis
 
 Vaccine hesitancy is often fueled by misinformation propagated on social media platforms such as Twitter, Bluesky, and TikTok. This phenomenon affects diverse age groups and regions in varying ways, making it a multifaceted challenge. To address this issue, we propose a solution that enables Medical Affairs teams to intervene effectively and reduce reluctance toward vaccination.
@@ -45,9 +49,6 @@ A proposed response post created by the system's agents.
 A button to review and publish the suggested post.
 This dashboard streamlines real-time monitoring and facilitates rapid, informed interventions by Medical Affairs teams.
 
-[![Python 3.8 - 3.11](https://img.shields.io/badge/Python-3.8%20--%203.11-blue)](https://www.python.org/downloads/release/python-3113/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/license/mit/)
-
 ### Manually handling the dependencies
 If you want to use an existing environment, just omit the Anaconda commands above:
 ```bash
@@ -73,5 +74,115 @@ This project requires the following Python packages:
 * `csv`
 
 
-    
+## **Usage**
 
+Follow these steps to use VaxLens effectively:
+
+1. **Process Tweets**  
+   Run the `tweet_processing.py` script to collect and preprocess vaccine-related tweets. This script fetches tweets using the Twitter API and saves them in a CSV format for further processing.
+
+   ```bash
+   python tweet_processing.py
+   ```
+
+   **Output**:  
+   A CSV file containing raw vaccine-related tweets, including metadata such as user information and tweet engagement metrics.
+
+2. **Sentiment Analysis and Keyword Extraction**  
+   Run the `LLM_agent.py` script to analyze the tweets. This script:
+   - Classifies tweets as **Positive**, **Neutral**, or **Negative** using sentiment analysis.
+   - Extracts **keywords** from tweets to identify trends and problematic topics.
+   - Estimates the **age demographic** of users posting the tweets.
+
+   ```bash
+   python LLM_agent.py
+   ```
+
+   **Output**:  
+   The updated CSV file will include new columns for:
+   - **Sentiment**: Classification of the tweet’s tone.
+   - **Keywords**: Highlighted key terms for targeted responses.
+   - **Age Estimation**: Approximation of user age for demographic insights.
+
+3. **Generate AI Responses**  
+   Run the `advanced_code.py` script to perform the following actions:
+   - Analyze extracted keywords to identify problematic narratives.
+   - Use agents to search the web for context and reliable sources.
+   - Propose AI-generated fact-based and empathetic responses.
+
+   ```bash
+   python advanced_code.py
+   ```
+
+   **Output**:  
+   A CSV file containing proposed responses for problematic tweets, ready for review or posting.
+
+4. **Visualize Insights**  
+   Launch the Streamlit dashboard to visualize flagged tweets, analyze trends, and review suggested responses.
+
+   ```bash
+   streamlit run tweet_dashboard.py
+   ```
+
+   **Output**:  
+   A fully interactive dashboard accessible via your local or network URL.
+
+---
+
+## **Requirements**
+
+This project requires the following Python packages:
+* `uagents`
+* `asyncio`
+* `threading`
+* `selenium`
+* `webdriver_manager`
+* `datetime`
+* `csv`
+* `streamlit`
+* `openai`
+* `pandas`
+* `matplotlib`
+* `scikit-learn`
+
+Ensure all dependencies are installed using the provided `requirements.txt` or manually as needed.
+
+---
+
+## **Example Workflow**
+
+1. **Collect Tweets**: 
+   ```bash
+   python tweet_processing.py
+   ```
+   Result: A CSV file with raw vaccine-related tweets.
+
+2. **Analyze Tweets**: 
+   ```bash
+   python LLM_agent.py
+   ```
+   Result: CSV file with added sentiment, keywords, and age estimation.
+
+3. **Generate Responses**: 
+   ```bash
+   python advanced_code.py
+   ```
+   Result: A proposed post tailored to address misinformation.
+
+4. **View Dashboard**:
+   ```bash
+   streamlit run tweet_dashboard.py
+   ```
+   Result: A fully interactive visualization of flagged tweets and responses.
+
+---
+
+## **Contributing**
+
+We welcome contributions! Feel free to submit pull requests or open issues for any improvements or bug fixes.
+
+---
+
+## **License**
+
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
