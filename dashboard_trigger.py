@@ -18,17 +18,21 @@ with col3:
 
 # Next row: Suggested tweet and sources side by side
 st.subheader("Response")
-col4, col5 = st.columns([1, 1])
+col4, col5 = st.columns([2, 1])
 
 with col4:
     st.subheader("Suggested Tweet")
     
     # Default suggested tweet text
-    suggested_tweet = "Vaccines like the mRNA COVID-19 shots are *not* gene therapy. This claim misrepresents science. mRNA vaccines teach your cells to fight the virus without altering DNA. Millions have been safely protected. Learn more: [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/different-vaccines/mrna.html)"
+    suggested_tweet = """Vaccines like the mRNA COVID-19 shots are *not* gene therapy. This claim misrepresents science. mRNA vaccines teach your cells to fight the virus without altering DNA. Millions have been safely protected. Learn more: [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/different-vaccines/mrna.html)"""
     
     # Editable text area for the suggested tweet
     edited_tweet = st.text_area("Edit Suggested Tweet", value=suggested_tweet, height=150)
-    
+
+    # Add an image representing the main idea of the tweet
+    st.image("https://i.ibb.co/4NjTRkL/vaccine-provax.webp", use_container_width=True)
+
+
     # Add a dummy "Post" button
     if st.button("Post"):
         st.success("Tweet posted successfully!")  # Dummy response
