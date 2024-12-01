@@ -20,7 +20,7 @@ import pandas as pd
 #Dictionary to convert country names to ISO codes
 convert_ISO_3166_2_to_1 = {
 
-'Astralia':'AUS',
+'Australia':'AUS',
 'Canada':'CAN',
 'Germany':'DEU',
 'China':'CHN',
