@@ -8,7 +8,7 @@ get_ipython().system('pip install geopandas seaborn')
 get_ipython().system('pip install plotly')
 
 
-# In[2]:
+# In[4]:
 
 
 import matplotlib.patches as mpatches
@@ -17,14 +17,38 @@ import seaborn as sns
 import geopandas as gpd
 import plotly.express as px
 import pandas as pd
-data_geo = {
-    'Country': ['GBR', 'CHN', 'USA', 'IR', 'DEU', 'AUS', 'CAN', 'RUS', 'CN'],
-    'NegativePostCount': [4, 2, 2, 1, 2, 1, 7, 3, 9]}
+#Dictionary to convert country names to ISO codes
+convert_ISO_3166_2_to_1 = {
 
+'Australia':'AUS',
+'Canada':'CAN',
+'Germany':'DEU',
+'China':'CHN',
+'France':'FRA',
+'India':'IND',
+'Iran':'IRN',
+'USA':'USA',
+'UK':'GBR'
+}
+#Read from datafiles 
+df2=pd.read_csv("df_simulated_tweets.csv")
+df2["Location"] = df2["Location"].map(convert_ISO_3166_2_to_1)
+
+#add up likes based on location
+df3=df2.groupby(["Location"]).sum()
+
+#extract names of locations
+df4=list(df2["Location"].unique());
+df4 = sorted([x for x in df4 if pd.notna(x)])
+
+data_geo = {
+    'Country': df4,
+    'Likes': df3['Likes']}
+#plot the world map
 fig = px.choropleth(data_geo, locations='Country',
                     projection='natural earth',
-                    color='NegativePostCount',
-                    title='Negative vaccine posts per country')
+                    color='Likes',
+                    title='Likes per country')
 fig.show()
 
 
