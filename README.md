@@ -58,7 +58,7 @@ When an alert is triggered, a new tab is opened to display:
 If you want to use an existing environment, just omit the Anaconda commands above:
 ```bash
 git clone https://github.com/kevinmicha/HackVaccination
-cd HACKVACCINATION
+cd HackVaccination
 pip install .
 ```
 
@@ -83,7 +83,7 @@ This project requires the following Python packages:
 
 Follow these steps to use VaxLens effectively:
 
-1. **Process Tweets**  
+1. **Process tweets**  
    Run the `tweet_processing.py` script to collect and preprocess vaccine-related tweets. This script fetches tweets using the Twitter API and saves them in a CSV format for further processing.
 
    ```bash
@@ -93,9 +93,9 @@ Follow these steps to use VaxLens effectively:
    **Output**:  
    A CSV file containing raw vaccine-related tweets, including metadata such as user information and tweet engagement metrics.
 
-2. **Sentiment Analysis and Keyword Extraction**  
+2. **Sentiment analysis and keyword extraction**  
    Run the `LLM_agent.py` script to analyse the tweets. This script:
-   - Classifies tweets as **Positive**, **Neutral**, or **Negative** using sentiment analysis.
+   - Classifies tweets as **POSITIVE**, **NEUTRAL**, or **NEGATIVE** using sentiment analysis.
    - Extracts **keywords** from tweets to identify trends and problematic topics.
    - Estimates the **age demographic** of users posting the tweets.
 
@@ -119,7 +119,7 @@ Follow these steps to use VaxLens effectively:
    python advanced_code.py
    ```
 
-4. **Visualise Insights**  
+4. **Visualise insights**  
    Launch the Streamlit dashboard to visualise flagged tweets, analyse trends, and review suggested responses.
 
    ```bash
