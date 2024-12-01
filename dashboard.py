@@ -134,8 +134,17 @@ w_cloud = WordCloud(width=800, height=400, background_color="white").generate(" 
 # Generate Charts
 ############################################
 
+date1 = pd.to_datetime("May 31st 2023")
+date2 = pd.to_datetime("July 28th 2023")
+
 #Sum Engagements for each day
 engagement_data = st.session_state.display_data[st.session_state.display_data["Sentiment"]=="Negative"].groupby(st.session_state.display_data.Time.dt.date)[['Engagements', "Likes", "Retweets", "Comments"]].sum().reset_index()
+engagement_data["Time"] = pd.to_datetime(engagement_data["Time"])
+
+#engagement data on date 1
+scatter_data1 = engagement_data[engagement_data["Time"].dt.date == date1.date()]
+scatter_data2 = engagement_data[engagement_data["Time"].dt.date == date2.date()]
+scatter_data = pd.concat([scatter_data1, scatter_data2])
 
 chart_engagement = (
     (
@@ -200,7 +209,22 @@ rolling_average = (
     .properties(width=600, height = 450)#Rolling mean 
 )
 
-plot_fig =   chart_engagement + rolling_average
+scatter = ( 
+    alt.Chart(scatter_data).mark_circle(size = 100).encode(
+            x=alt.X(
+                "Time",
+                type="temporal",
+            ),
+            y=alt.Y(
+                field="Engagements",
+                type="quantitative",
+                aggregate="sum",
+                title="Engagements"
+            ),
+    )
+)
+
+plot_fig =   chart_engagement + rolling_average + scatter
 
 
 ############################################

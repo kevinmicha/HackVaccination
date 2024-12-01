@@ -198,9 +198,6 @@ with col3:
     # Create the plot
     st.altair_chart(plot_fig)    
 
-
-
-
 with col4:
     st.markdown("### 🌟 Engagement Stats")
     st.write("The chart on the left shows the daily negative engagements two weeks before the action date and a month after the action date. The figures below show the total engagements with the tweet that was posted.")
