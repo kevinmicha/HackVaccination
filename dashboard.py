@@ -8,6 +8,8 @@ import geopandas as gpd
 import pydeck as pdk
 import colorsys
 from wordcloud import WordCloud
+import os
+import copy
 
 st.set_page_config(page_title="Agent Interaction Dashboard", layout="wide")
 
@@ -22,6 +24,12 @@ if "engagement_action_trigger" not in st.session_state:
 
 if "sentiment_action_trigger" not in st.session_state:
     st.session_state.sentiment_action_trigger = 0.55
+
+if "past_trigger_dates" not in st.session_state:
+    st.session_state.past_trigger_dates = ["May 31st 2023", "July 28th 2023"]
+    # st.session_state.past_trigger_dates = []
+    # for i in os.listdir("Incident_Reports"):
+    #     st.session_state.past_trigger_dates.append(i.replace("_", " "))
 
 ############################################
 # Get Data Functions
@@ -236,13 +244,19 @@ with action_col:
         st.write("Based on the sentiment analysis, no action is required at this moment")
 
     st.subheader("Past Actions")
-    action_view_selection = st.selectbox("Review Past Action", ["Past Actions", "Action: May 31st 2023", "Action: July 28th 2023"])
+    action_date = st.selectbox("Review Past Action", ["Past Actions", "Action: May 31st 2023", "Action: July 28th 2023"])
 
-    if action_view_selection != "Past Actions":
-        st.write(f"Action Date: {action_view_selection[8:]}")
+    if action_date != "Past Actions":
+        st.write(f"Action Date: {action_date[8:]}")
         st.write(f'Trigger Type: Negative Sentiments.') #Should get this from folder.
         st.write("Action Details: Post Made to Twitter")
-        st.page_link(st.session_state.site_loc_past_action, label = "View Action Outcome Here")
+        is_clicked = st.button("View Action Outcomes")
+        if is_clicked:
+            #write action_date to txt file
+            with open("current_action.txt", "w") as f:
+                f.write(action_date[8:])
+            st.switch_page(st.session_state.site_loc_past_action)
+        
 
 
 data_col, action_col = st.columns(spec = [2, 2])
